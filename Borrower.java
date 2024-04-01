@@ -58,7 +58,10 @@ public class Borrower extends User{
 
     public String getAddress(){return this.address;}
 
+<<<<<<< Updated upstream
     @Override
+=======
+>>>>>>> Stashed changes
     public boolean GetFineStatus() {
         dbConnectivity db = new dbConnectivity();
         return (db.GetFineStatus(this.GetId()));
@@ -77,7 +80,10 @@ public class Borrower extends User{
         boolean result = db.SetFineAmount(this.GetId(), user_fine);
     }
 
+<<<<<<< Updated upstream
     @Override
+=======
+>>>>>>> Stashed changes
     public boolean AddLoanInfo(Loan LoanInfo) {
 
         BookLoans.add(LoanInfo);
@@ -120,7 +126,10 @@ public class Borrower extends User{
         return result;
     }
 
+<<<<<<< Updated upstream
 
 
 
+=======
+>>>>>>> Stashed changes
 }

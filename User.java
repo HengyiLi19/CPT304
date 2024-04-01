@@ -8,6 +8,10 @@ abstract class User {
     private final String name;
     private final int id;
     private final char gender;
+<<<<<<< Updated upstream
+=======
+    private String pw;
+>>>>>>> Stashed changes
     //optional paras;
     private String phone;
 
@@ -22,7 +26,11 @@ abstract class User {
     public String getName() {
         return name;
     }
+<<<<<<< Updated upstream
     public String getId() {
+=======
+    public int getId() {
+>>>>>>> Stashed changes
         return id;
     }
     public char getGender(){return gender;}
@@ -35,8 +43,14 @@ abstract class User {
         boolean result = db.SetTelephone(this.GetId(), this.phone);
     }
 
+<<<<<<< Updated upstream
     private int GetId() { return this.id;
     }
+=======
+    public int GetId() { return this.id;
+    }
+    public String getPw(){return this.pw;}
+>>>>>>> Stashed changes
 
     //Builder Pattern for constructor;
 
@@ -75,6 +89,10 @@ abstract class User {
 
 
     public ArrayList<Books> SearchBookbyTitle(String s){
+<<<<<<< Updated upstream
+=======
+        Books[] bl;
+>>>>>>> Stashed changes
         for (Books b : bl){
             String title = b.getTitle();
             if (title.contains(s) == true){
@@ -84,7 +102,11 @@ abstract class User {
             }
         }
 
+<<<<<<< Updated upstream
         ArrayList<Books> bookList = new ArrayList<>();
+=======
+        ArrayList<Books> bookList = new ArrayList<Books>();
+>>>>>>> Stashed changes
         dbConnectivity db = new dbConnectivity();
         bookList = db.SearchBookbyTitle(s);
         if (bookList.isEmpty() == false){
@@ -114,7 +136,11 @@ abstract class User {
     }
 
     public ArrayList<Books> SearchBookbyAuthor(String s){
+<<<<<<< Updated upstream
         ArrayList<Books> bookList = new ArrayList<>();
+=======
+        ArrayList<Books> bookList = new ArrayList<Books>();
+>>>>>>> Stashed changes
         dbConnectivity db = new dbConnectivity();
         bookList = db.SearchBookbyAuthor(s);
         if (bookList.isEmpty() == false){
@@ -148,6 +174,7 @@ abstract class User {
         System.out.println(info);
     }
 
+<<<<<<< Updated upstream
     //Applying Decorator Pattern to create an account(Borrower or Librarian)
     public interface Creator{void createAccount();}
     public class BorrowerCreator implements Creator{
@@ -186,6 +213,79 @@ abstract class User {
 
 
 
+=======
+    public interface LoginHandler{
+        boolean handle(User u);
+        void setNext(LoginHandler nextHandler);
+        LoginHandler getNextHandler();
+    }
+
+    public class IDHandler implements LoginHandler{
+        private LoginHandler next;
+
+        @Override
+        public LoginHandler getNextHandler(){return next;}
+
+        @Override
+        public boolean handle(User u){
+            dbConnectivity db = new dbConnectivity();
+            boolean flag = db.CheckUserId(u.getId());
+            if (flag == true){
+                this.setNext(next);
+            }else{
+                System.out.println("Cannot find user with ID:" + u.getId());
+            }
+            return flag;
+        }
+
+        @Override
+        public void setNext(LoginHandler nextHandler){
+            this.next = nextHandler;
+        }
+    }
+
+    public class PwHandler implements LoginHandler{
+        private LoginHandler next;
+        @Override
+        public LoginHandler getNextHandler(){return next;}
+        @Override
+        public boolean handle(User u){
+            dbConnectivity db = new dbConnectivity();
+            boolean flag = db.CheckUserPw(u.getPw());
+            if (flag == true){
+                this.setNext(next);
+            }else{
+                System.out.println("Cannot find user with ID:" + u.getId());
+            }
+            return flag;
+        }
+
+        @Override
+        public void setNext(LoginHandler nextHandler){
+            this.next = nextHandler;
+        }
+    }
+
+    public class LoginProcessor {
+        private LoginHandler chain;
+        public void addHandler(LoginHandler h){
+            if (chain == null){
+                chain = h;
+            }else{
+                LoginHandler currentHandler = chain;
+                while (currentHandler.getNextHandler()!= null){
+                    currentHandler = currentHandler.getNextHandler();
+                }
+                currentHandler.setNext(h);
+            }
+        }
+
+        public boolean logIn(String name, int id, String pw){
+            return chain.handle(User.this);
+        }
+    }
+
+>>>>>>> Stashed changes
     @Override
     public String toString(){
         String info = "Name: " + this.name + "/n" +
